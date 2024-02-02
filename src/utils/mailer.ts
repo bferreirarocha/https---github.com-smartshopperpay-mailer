@@ -3,9 +3,10 @@ import { Order } from "../types"
 import { ClientSecretCredential } from '@azure/identity'; 
 import * as dotenv from 'dotenv';
 import { Client } from '@microsoft/microsoft-graph-client';
-import path from 'path';
+import {imageToBase64} from './utilities';    
 import ejs from 'ejs';
-const fs = require('fs'); 
+import path from 'path';
+const fs = require('fs');
 
 
 export const OrderReceived =  async(order: Order): Promise<boolean> => {
@@ -59,10 +60,23 @@ const SendMailOrder = async (order:Order) : Promise<boolean> => {
     
 let emailOptions
  try {
-    const ejsTemplatePath = path.join('./src/utils/templates', 'Received.ejs'); 
+    const ejsTemplatePath = path.join('./src/utils/templates/order', 'index.ejs'); 
     const ejsTemplate = fs.readFileSync(ejsTemplatePath, 'utf-8'); 
-     
-    const htmlTemplate = ejs.render(ejsTemplate, { order });  
+
+    const imgTemplatePath = path.join('./src/utils/templates/order', 'images'); 
+
+    const imagePath= path.join('./src/utils/templates/order/images')
+    const imageDataArray = [imgTemplatePath +"\\image-7.png", imgTemplatePath +"\\image-4.png" ]
+      
+    const imageSources:string[]= imageDataArray.map((imagePath: string) => {
+        const imageBuffer = fs.readFileSync(imagePath);
+        const base64Image = imageBuffer.toString('base64');
+        return base64Image;
+    });  
+    console.log("🚀 ~ imageSources ~ imageSources:", imageSources)
+
+    
+    const htmlTemplate = ejs.render(ejsTemplate, { imageSources });  
      emailOptions = {
         message: {
             subject: 'Subject of your email',
