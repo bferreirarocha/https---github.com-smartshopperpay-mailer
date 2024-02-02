@@ -63,19 +63,24 @@ let emailOptions
     const ejsTemplatePath = path.join('./src/utils/templates/order', 'index.ejs'); 
     const ejsTemplate = fs.readFileSync(ejsTemplatePath, 'utf-8'); 
 
-    const imgTemplatePath = path.join('./src/utils/templates/order', 'images'); 
+    // const imgTemplatePath = path.join('./src/utils/templates/order', 'images'); 
 
-    const imagePath= path.join('./src/utils/templates/order/images')
-    const imageDataArray = [imgTemplatePath +"\\image-7.png", imgTemplatePath +"\\image-4.png" ]
+    // const imagePath= path.join('./src/utils/templates/order/images')
+    // const imageDataArray = [imgTemplatePath + "\\image-7.png", imgTemplatePath + "\\image-4.png"];
+
+    // const imageSources = await Promise.all(imageDataArray.map(imagePath => imageToBase64(imagePath)));
+    // console.log("🚀 ~ SendMailOrder ~ imageSources:", imageSources)
+
       
-    const imageSources:string[]= imageDataArray.map((imagePath: string) => {
-        const imageBuffer = fs.readFileSync(imagePath);
-        const base64Image = imageBuffer.toString('base64');
-        return base64Image;
-    });  
+
+    const imageSources: string[] = [];
+    await Promise.all(order.products.map(async (product) => {
+        //const imageSource: string = await imageToBase64(product.image) as string;
+        imageSources.push(product.image );
+    }));
+
     console.log("🚀 ~ imageSources ~ imageSources:", imageSources)
 
-    
     const htmlTemplate = ejs.render(ejsTemplate, { imageSources });  
      emailOptions = {
         message: {
@@ -87,7 +92,7 @@ let emailOptions
             toRecipients: [
                 {
                     emailAddress: {
-                        address: 'bruno.ferreira.rocha@gmail.com',
+                        address: 'damiano.ceka83@gmail.com',
                     },
                 },
             ],

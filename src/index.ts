@@ -29,7 +29,7 @@ app.post('/neworder', ensureToken, async (req: Request, res: Response) => {
         console.log("services - api/neworder - Start")   
 
         const encryptedPayload = req.body; 
-        console.log("🚀 ~ app.post ~ encryptedPayload:", encryptedPayload)
+       // console.log("🚀 ~ app.post ~ encryptedPayload:", encryptedPayload)
         let newOrder: Order = encryptedPayload;
         console.log("🚀 ~ app.post ~ newOrder:", newOrder);
         

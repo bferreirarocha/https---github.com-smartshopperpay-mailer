@@ -24,6 +24,7 @@
     "env": "^0.0.2",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
+    "image-to-base64": "^2.2.0",
     "jsonwebtoken": "^9.0.2",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0"
